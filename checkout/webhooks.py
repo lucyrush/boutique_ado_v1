@@ -7,6 +7,7 @@ from checkout.webhook_handler import StripeWH_Handler
 
 import stripe
 
+
 @require_POST
 @csrf_exempt
 def webhook(request):
@@ -26,12 +27,17 @@ def webhook(request):
         )
     except ValueError as e:
         # Invalid payload
+        print('first')
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
+        print('second')
         return HttpResponse(status=400)
     except Exception as e:
+        print('third')
         return HttpResponse(content=e, status=400)
+
+
 
     # Set up a webhook handler
     handler = StripeWH_Handler(request)
